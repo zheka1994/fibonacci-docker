@@ -10,6 +10,7 @@ jobs:
   run-test:
     runs-on: ubuntu-latest
     steps:
+      - run: ls
       - run: docker build -t eguziy/fibonacci-test -f ./client/Dockerfile.dev ./client
       - run: docker run eguziy/fibonacci-test npm run test -- --coverage
   build-images:
