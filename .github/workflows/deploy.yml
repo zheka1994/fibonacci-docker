@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: docker build -t eguziy/fibonacci-test -f ./client/Dockerfile.dev ./client
-      - run: docker run eguziy/fibonacci-test npm run test -- --coverage
+      - run: docker run -e CI=true eguziy/fibonacci-test npm run test -- --coverage
   build-images:
     needs: run-test
     runs-on: ubuntu-latest
