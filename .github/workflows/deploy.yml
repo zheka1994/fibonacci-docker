@@ -22,5 +22,12 @@ jobs:
       - run: docker build -t eguziy/fibonacci-nginx -f ./nginx/Dockerfile ./nginx
       - run: docker build -t eguziy/fibonacci-server -f ./server/Dockerfile ./server
       - run: docker build -t eguziy/fibonacci-worker -f ./worker/Dockerfile ./worker
-  
+  # доставка собранных образов в хранилище registry (в данном случае docker hub)
+  push-to-docker-registry:
+    needs: [run-test, build-images]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker login -u="${{secrets.DOCKER_ID}}" -p="${{secrets.DOCKER_ID}}"
+      - run: docker push "${{secrets.DOCKER_ID}}/fibonacci"
   
