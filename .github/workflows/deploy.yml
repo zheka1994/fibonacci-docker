@@ -7,7 +7,7 @@ on:
     branches:
       - main
 env:
-  DOCKER_IMAGES_TMP_PATH: path/to/artifacts
+  DOCKER_IMAGES_TMP_PATH: /path/to/artifacts
 
 jobs:
   run-test:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: echo "${{env.DOCKER_IMAGES_TMP_PATH}}"
       - name: create directory to docker images
-        run: mkdir "${{env.DOCKER_IMAGES_TMP_PATH}}"
+        run: mkdir -p "${{env.DOCKER_IMAGES_TMP_PATH}}"
       - name: build eguziy/fibonacci-client image
         run: |
           docker build -t eguziy/fibonacci-client -f ./client/Dockerfile ./client
