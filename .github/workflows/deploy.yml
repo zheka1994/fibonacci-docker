@@ -27,19 +27,19 @@ jobs:
       - name: build eguziy/fibonacci-client image
         run: |
           docker build -t eguziy/fibonacci-client -f ./client/Dockerfile ./client
-          docker save eguziy/fibonacci-client > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-client.tar"
+          sudo docker save eguziy/fibonacci-client > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-client.tar"
       - name: build eguziy/fibonacci-nginx
         run: |
           docker build -t eguziy/fibonacci-nginx -f ./nginx/Dockerfile ./nginx
-          docker save eguziy/fibonacci-nginx > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-nginx.tar"
+          sudo docker save eguziy/fibonacci-nginx > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-nginx.tar"
       - name: build eguziy/fibonacci-server
         run: |
           docker build -t eguziy/fibonacci-server -f ./server/Dockerfile ./server
-          docker save eguziy/fibonacci-server > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-server.tar"
+          sudo docker save eguziy/fibonacci-server > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-server.tar"
       - name: build eguziy/fibonacci-worker
         run: |
           docker build -t eguziy/fibonacci-worker -f ./worker/Dockerfile ./worker
-          docker save eguziy/fibonacci-worker > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-worker.tar"
+          sudo docker save eguziy/fibonacci-worker > "${{env.DOCKER_IMAGES_TMP_PATH}}/fibonacci-worker.tar"
       - name: Temporarily save Docker image
         uses: actions/upload-artifact@v3
         with:
@@ -59,19 +59,19 @@ jobs:
       - name: load docker-client images
         run: |
           cd "${{env.DOCKER_IMAGES_TMP_PATH}}"
-          docker load < fibonacci-client.tar
+          sudo docker load < fibonacci-client.tar
       - name: load docker-nginx images
         run: |
           cd "${{env.DOCKER_IMAGES_TMP_PATH}}"
-          docker load < fibonacci-nginx.tar
+          sudo docker load < fibonacci-nginx.tar
       - name: load docker-server images
         run: |
           cd "${{env.DOCKER_IMAGES_TMP_PATH}}"
-          docker load < fibonacci-server.tar
+          sudo docker load < fibonacci-server.tar
       - name: load docker-worker images
         run: |
           cd "${{env.DOCKER_IMAGES_TMP_PATH}}"
-          docker load < fibonacci-worker.tar
+          sudo docker load < fibonacci-worker.tar
       - run: docker login -u="${{secrets.DOCKER_ID}}" -p="${{secrets.DOCKER_PASSWORD}}"
       - run: docker push "${{secrets.DOCKER_ID}}/fibonacci-client"
       - run: docker push "${{secrets.DOCKER_ID}}/eguziy/fibonacci-nginx"
