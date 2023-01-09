@@ -7,9 +7,13 @@ services:
   redis:
     image: redis
   api:
-    image: eguziy/fibonacci-server
-    mem_limit: 128m
-    hostname: api
+    restart: always
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./server:/app
     ports:
       - "5001:5000"
     environment:
@@ -21,23 +25,29 @@ services:
       - PGPASSWORD=postgres_password
       - PGPORT=5432
   worker:
-    image: eguziy/fibonacci-worker
-    mem_limit: 128m
-    hostname: worker
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
   client:
     restart: always
-    mem_limit: 128m
-    hostname: client
-    image: eguziy/fibonacci-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./client:/app
     ports:
       - "3000:3000"
   nginx:
     restart: always
-    mem_limit: 128m
-    hostname: nginx
-    image: eguziy/fibonacci-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
     ports:
       - "3050:80"
