@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ls "${{env.DOCKER_IMAGES_TMP_PATH}}"
+      - run: echo "${{env.DOCKER_IMAGES_TMP_PATH}}"
       - name: create directory to docker images
         run: mkdir "${{env.DOCKER_IMAGES_TMP_PATH}}"
       - name: build eguziy/fibonacci-client image
