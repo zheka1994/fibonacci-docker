@@ -1,43 +1,33 @@
 version: "3"
 services:
-  postgres:
-    image: postgres
-    environment:
-      - POSTGRES_PASSWORD=postgres_password
-  redis:
-    image: redis
   api:
     image: eguziy/fibonacci-server
     mem_limit: 128m
     hostname: api
-    ports:
-      - "5001:5000"
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - PGUSER=postgres
-      - PGHOST=postgres
-      - PGDATABASE=postgres
-      - PGPASSWORD=postgres_password
-      - PGPORT=5432
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
+      - PGUSER=$PGUSER
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
   worker:
     image: eguziy/fibonacci-worker
     mem_limit: 128m
     hostname: worker
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
   client:
     restart: always
     mem_limit: 128m
     hostname: client
     image: eguziy/fibonacci-client
-    ports:
-      - "3000:3000"
   nginx:
     restart: always
     mem_limit: 128m
     hostname: nginx
     image: eguziy/fibonacci-nginx
     ports:
-      - "3050:80"
+      - "80:80"

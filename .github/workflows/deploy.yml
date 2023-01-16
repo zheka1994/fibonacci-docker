@@ -32,4 +32,18 @@ jobs:
       - run: |
           docker build -t eguziy/fibonacci-worker -f ./worker/Dockerfile ./worker
           docker push "${{secrets.DOCKER_ID}}/fibonacci-worker"
+  deploy-app-to-amazon-bean-stalk:
+    needs: [run-test, build-and-deploy-images]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: fibonacci
+          environment_name: Fibonacci-env
+          #version_label: "app-cbe0-210131_121135"
+          region: ap-northeast-1
+
   
