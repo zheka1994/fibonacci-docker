@@ -1,0 +1,1 @@
+Не используются файлы docker-compose, образ nginx (в кубере перезжаем на ingress service)
